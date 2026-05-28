@@ -1,0 +1,47 @@
+---
+
+* name: Desplegar infraestructura Linux segura
+  hosts: localhost
+  connection: local
+
+  vars_files:
+
+  * vars.yml
+
+  tasks:
+
+  * name: Crear grupo de recursos
+    azure.azcollection.azure_rm_resourcegroup:
+    name: "{{ grupo_recursos }}"
+    location: "{{ region }}"
+
+  * name: Crear red virtual
+    azure.azcollection.azure_rm_virtualnetwork:
+    resource_group: "{{ grupo_recursos }}"
+    name: "{{ nombre_red }}"
+    address_prefixes:
+    - "10.0.0.0/16"
+
+  * name: Crear subred Linux
+    azure.azcollection.azure_rm_subnet:
+    resource_group: "{{ grupo_recursos }}"
+    virtual_network_name: "{{ nombre_red }}"
+    name: "{{ nombre_subred }}"
+    address_prefix: "10.0.1.0/24"
+
+  * name: Crear firewall NSG
+    azure.azcollection.azure_rm_securitygroup:
+    resource_group: "{{ grupo_recursos }}"
+    name: "{{ nombre_nsg }}"
+
+  * name: Permitir SSH
+    azure.azcollection.azure_rm_securitygroup:
+    resource_group: "{{ grupo_recursos }}"
+    name: "{{ nombre_nsg }}"
+    rules:
+    - name: permitir-ssh
+    protocol: Tcp
+    destination_port_range: 22
+    access: Allow
+    priority: 1000
+    direction: Inbound

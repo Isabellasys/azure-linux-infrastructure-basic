@@ -1,0 +1,39 @@
+# Resource Group principal del proyecto
+
+resource_group: rg-hybrid-linux-dev
+
+# Región Azure donde desplegaremos la infraestructura
+
+location: spaincentral
+
+# Virtual Network principal
+
+vnet_name: vnet-hybrid-dev
+
+# Subred donde vivirá la VM Linux
+
+subnet_name: subnet-linux-dev
+
+# Network Security Group (firewall)
+
+nsg_name: nsg-linux-dev
+
+# IP pública para acceso SSH
+
+public_ip_name: pip-linux-dev
+
+# Tarjeta de red de la VM
+
+nic_name: nic-linux-dev
+
+# Nombre de la máquina virtual Linux
+
+vm_name: vm-linux-dev
+
+# Usuario administrador Linux
+
+admin_username: azureuser
+
+# Tamaño de la VM
+
+vm_size: Standard_B1s
