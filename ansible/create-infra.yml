@@ -37,6 +37,12 @@
             access: Allow
             priority: 1000
             direction: Inbound
+          - name: permitir-http        # <--- ¡LA REGLA MÁGICA QUE FALTABA!
+            protocol: Tcp
+            destination_port_range: 80
+            access: Allow
+            priority: 1010
+            direction: Inbound
 
     - name: Crear IP pública
       azure.azcollection.azure_rm_publicipaddress:
@@ -89,7 +95,7 @@
           
           # 2. Clono mi repositorio donde tengo mi web y mi Dockerfile
           cd /home/azureuser
-          git clone https://github.com/TU-USUARIO/azure-linux-infrastructure-basic.git proyecto
+          git clone https://github.com/Isabellasys/azure-linux-infrastructure-basic.git proyecto
           
           # 3. Construyo mi imagen Docker local y levanto el contenedor en produccion
           cd proyecto
