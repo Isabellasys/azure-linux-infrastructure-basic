@@ -75,3 +75,23 @@
           version: latest
         boot_diagnostics:
           enabled: false
+        custom_data: |
+          #!/bin/bash
+          # Guardo un registro de todo lo que hace este script por si necesito depurar errores
+          exec > /var/log/despliegue_docker.log 2>&1
+          set -e
+          
+          # 1. Actualizo repositorios e instalo Docker y Git en la maquina
+          apt-get update
+          apt-get install -y docker.io git
+          systemctl enable docker
+          systemctl start docker
+          
+          # 2. Clono mi repositorio donde tengo mi web y mi Dockerfile
+          cd /home/azureuser
+          git clone https://github.com/TU-USUARIO/azure-linux-infrastructure-basic.git proyecto
+          
+          # 3. Construyo mi imagen Docker local y levanto el contenedor en produccion
+          cd proyecto
+          docker build -t mi-web-real .
+          docker run -d -p 80:80 --restart always --name web-produccion mi-web-real
